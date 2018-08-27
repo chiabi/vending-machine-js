@@ -1,13 +1,27 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins');
+@import url('https://fonts.googleapis.com/css?family=Poppins|Lobster');
+
+$images-path: '../assets';
 
 $red: #F40311;
 $yellow: #F1C40F;
 $blue: #1A5276;
 $black: #181818;
 
-$primary-color: $yellow;
+$primary-color: $red;
 $font-color: $black;
 $font-stack: 'Poppins', sans-serif;
+$point-font: 'Lobster', cursive;
+
+$drink-items: (
+  'coca-cola': #CB4335,
+  'cider': #28B463,
+  'fanta': #E67E22,
+  'water': #2E86C1,
+  'dr-pepper': #A93226,
+  'vitamin': #D4AC0D,
+  'grape-juice': #884EA0,
+  'orange-juice': #D68910,
+);
 
 @mixin flex-center {
   display: flex;
@@ -33,23 +47,102 @@ body {
 .app {
   display: flex;
 }
+
 .machine {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
   width: 400px;
   height: 600px;
+  padding: 20px;
   border-radius: 5px;
   border: 10px;
   background-color: $primary-color;
   &__display {
-    margin: 20px;
-    background-color: $black;
+    width: 100%;
+    background-color: darken($primary-color, 35%);
+  }
+  &__ad {
+    overflow: hidden;
+    width: 60%;
+    height: 100px;
+    border: 2px solid #fff;
+    background-color: darken($red, 20%);
+    background-image: 
+      radial-gradient(circle at 50% 80%, #641E16 60%, transparent 60%);
+    position: relative;
+    &:before {
+      content: '';
+      width: 80px;
+      height: 200px;
+      border-left: 5px solid rgba(#fff, 0.8);
+      border-right: 5px solid rgba(#fff, 0.8);
+      background-color: #641E16;
+      background-image: 
+        // radial-gradient(circle at 20% 35%, transparent 5px, rgba(#fff, 0.8) 6px, transparent 7px),
+        radial-gradient(circle at 51% 61%, #641E16 2px, transparent 2px),
+        radial-gradient(circle at 50% 63%, transparent 1px, darken(#641E16, 20%) 4px, transparent 5px),
+        radial-gradient(circle at 29% 31%, #641E16 2px, transparent 2px),
+        radial-gradient(circle at 28% 33%, transparent 1px, darken(#641E16, 20%) 4px, transparent 5px),
+        radial-gradient(circle at 25% 36%, #641E16 4px, transparent 4px),
+        radial-gradient(circle at 25% 38%, transparent 3px, darken(#641E16, 20%) 6px, transparent 7px),
+        repeating-linear-gradient(90deg, transparent 0, transparent 30%, rgba(#fff, 0.2) 30%, rgba(#fff, 0.2) 35%, transparent 35%),
+        linear-gradient(90deg, darken(#641E16, 20%) 10%, #641E16 10%, #641E16 80%, darken(#641E16, 20%) 80%, darken(#641E16, 20%) 97%, #641E16 97%);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-15deg)
+    }
+    &:after {
+      content: 'Coca-Cola';
+      font-family: $point-font;
+      color: #fff;
+      font-size: 2em;
+      white-space: nowrap;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-15deg)
+    }
+  }
+  &__ui {
+    width: 40%;
+    height: 50px;
+    background-color: gray;
+  }
+  &__door {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 10px;
+    width: 60%;
+    height: 80px;
+    border-top: 5px solid lighten($primary-color, 15%);
+    border-left: 5px solid darken($primary-color, 15%);
+    border-right: 5px solid darken($primary-color, 15%);
+    border-bottom: 20px solid darken($primary-color, 10%);
+    font-size: 0.85em;
+    color: rgba(#fff, 0.2);
+    background-color: darken($primary-color, 35%);
+    background-image:
+      linear-gradient(13deg, transparent, rgba(gray, 0.5) 50%);
   }
 }
 
-.display-row {
+.display-shelf {
   display: flex;
   justify-content: space-around; 
   padding-top: 1.5em;
-  border-bottom: 2.5em solid darken($yellow, 20%);
+  border-bottom: 2.5em solid darken($primary-color, 20%);
+}
+%drink-curve {
+  content: '';
+  width: 0.5em;
+  height: 0.3em;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  background-color: darken($primary-color, 35%);
 }
 .drink {
   margin-bottom: 2.2;
@@ -57,13 +150,46 @@ body {
   &__item {
     width: 3em;
     height: 5em;
-    position: relative;
+    border-top: 3px solid gray;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
     background-color: #fff;
+    position: relative;
+    overflow: hidden;
+    &:before {
+      @extend %drink-curve;
+      left: 0;
+      transform: translateX(-70%);
+    }
+    &:after {
+      @extend %drink-curve;
+      right: 0;
+      transform: translateX(70%);
+    }
     span {
       position: absolute;
       top: 50%;
-      left: 0;
-      transform: translateY(-50%) rotate(-50deg)
+      left: 50%;
+      transform-origin: 0 0 0;
+      transform-style: preserve-3d;
+      transform: translateY(-50%) translateX(-25%) translateZ(10px) rotateX(10deg) rotateZ(25deg) rotateY(-10deg);  
+      font-family: $point-font;
+      color: rgba(#fff, 0.5);
+      text-shadow: 
+        1px 1px 0 rgba($black, 0.2),
+        -1px 1px 0 rgba($black, 0.2),
+        1px -1px 0 rgba($black, 0.2),
+        -1px -1px 0 rgba($black, 0.2);
+    }
+  }
+  @each $name, $color in $drink-items {
+    &.#{$name} {
+      .drink__item {
+        background-color: $color;
+        background-image: 
+        linear-gradient(180deg, darken($color, 20%) 0.3em, darken($color, 20%) 0.3em, transparent 0.4em, transparent),
+        linear-gradient(90deg, darken($color, 20%) 20%, $color, rgba(#fff, 0.5), darken($color, 20%));
+      }
     }
   }
   .btn-buy {
@@ -97,13 +223,19 @@ body {
       }
     }
   }
+  &.is-can-buy {
+    .btn-buy {
+      border-color: $yellow;
+      box-shadow: 0 0 10px 2px $yellow;
+    }
+  }
 }
 
 
 .user {
   flex-grow: 1;
   padding: 20px;
-  // backgrond-color: gray;
+  // background-color: gray;
 }
 
 .wallet {
