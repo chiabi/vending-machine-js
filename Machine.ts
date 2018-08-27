@@ -1,0 +1,9 @@
+class Machine {
+  state = {
+
+  }
+  buyItems() {
+
+  }
+  
+}

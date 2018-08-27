@@ -8,6 +8,58 @@
   <script src="./bundle.js"></script>
 </head>
 <body>
-  
+  <div class="app">
+    <div class="machine">
+      <div class="machine__display">
+        <div class="display-row">
+          <div class="drink coca-cola is-can-buy" data-order="0">
+            <div class="drink__item"><span>Coca Cola</span></div>
+            <button class="btn-buy">700원</button>
+          </div>
+          <div class="drink cider" data-order="1">
+            <div class="drink__item"><span>Cider</span></div>
+            <button class="btn-buy" disabled>700원</button>
+          </div>
+          <div class="drink hwanta" data-order="2">
+            <div class="drink__item"><span>Fanta</span></div>
+            <button class="btn-buy">700원</button>
+          </div>
+          <div class="drink water" data-order="3">
+            <div class="drink__item"><span>Water</span></div>
+            <button class="btn-buy">700원</button>
+          </div>
+        </div>
+        <div class="display-row">
+          <div class="drink jeti" data-order="0">
+            <div class="drink__item"><span>Jeti</span></div>
+            <button class="btn-buy">700원</button>
+          </div>
+          <div class="drink vitamin" data-order="1">
+            <div class="drink__item"><span>Vitamin</span></div>
+            <button class="btn-buy">700원</button>
+          </div>
+          <div class="drink dr-pepper" data-order="2">
+            <div class="drink__item"><span>Dr Pepper</span></div>
+            <button class="btn-buy">700원</button>
+          </div>
+          <div class="drink orange-juice" data-order="3">
+            <div class="drink__item"><span>Orange Juice</span></div>
+            <button class="btn-buy">700원</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="user">
+      <div class="wallet">
+        <h2>My wallet</h2>
+        <div class="wallet__coin">
+          <button class="coin coin__50" data-coin="50">50</button>
+          <button class="coin coin__100" data-coin="100">100</button>
+          <button class="coin coin__500" data-coin="500">500</button>
+          <button class="coin coin__1000" data-coin="1000">1000</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
