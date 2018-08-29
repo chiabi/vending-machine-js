@@ -41,7 +41,7 @@ $drink-items: (
   box-sizing: border-box;
 }
 body {
-  background-color: $black;
+  background-color: lighten($black, 10%);
   font-family: $font-stack;
 }
 .app {
@@ -49,19 +49,76 @@ body {
   @include flex-center;
 }
 
+@mixin port-style($port-height, $port-border, $door-class: 'door') {
+  height: $port-height;
+  border-top: $port-border solid lighten($primary-color, 15%);
+  border-left: $port-border solid darken($primary-color, 15%);
+  border-right: $port-border solid darken($primary-color, 15%);
+  border-bottom: #{$port-border * 4} solid darken($primary-color, 10%);
+  background-color: darken($primary-color, 35%);
+  perspective: $port-height;
+  .#{$door-class} {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(#fff, 0.5);
+    color: rgba(#fff, 0.2);
+    background-color: transparent;
+    background-image: linear-gradient(13deg, transparent, rgba(gray, 0.5) 50%);
+    transform-origin: 50% 0;
+    transform-style: preserve-3d;
+    transition: transform 0.3s;
+    transform: rotateX(0);
+    @content;
+    &:hover {
+      transform: rotateX(-10deg)
+    }
+  }
+}
+
 .machine {
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
   width: 400px;
-  height: 600px;
+  height: 700px;
   padding: 20px;
   border-radius: 5px;
   border: 10px;
   background-color: $primary-color;
+  position: relative;
+  box-shadow: inset 2px -2px 15px 5px darken($primary-color, 25%);
+  &:before,
+  &:after {
+    content: '';
+    width: 50px;
+    height: 5px;
+    position: absolute;
+    top: 100%;
+    background-color: darken($primary-color, 35%);
+  }
+  &:before {
+    left: 5px;
+  }
+  &:after {
+    right: 5px;
+  }
   &__display {
     width: 100%;
     background-color: darken($primary-color, 35%);
+    position: relative;
+    &:after {
+      content: '';
+      width: 100%;
+      height: 100px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-image: linear-gradient(20deg, transparent 60%, rgba(#fff, 0.3) 80%)
+    }
   }
   &__ad {
     overflow: hidden;
@@ -107,40 +164,134 @@ body {
     }
   }
   &__ui {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     width: 40%;
-    height: 50px;
-    background-color: gray;
-  }
-  &__door {
-    width: 60%;
-    height: 80px;
-    border-top: 5px solid lighten($primary-color, 15%);
-    border-left: 5px solid darken($primary-color, 15%);
-    border-right: 5px solid darken($primary-color, 15%);
-    border-bottom: 20px solid darken($primary-color, 10%);
-    background-color: darken($primary-color, 35%);
-    perspective: 80px;
-    .door {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      padding: 5px;
+    height: 200px;
+    padding-left: 20px;
+    .counter {
       width: 100%;
-      height: 100%;
-      border: 1px solid rgba(#fff, 0.5);
-      font-size: 1.5em;
-      color: rgba(#fff, 0.2);
-      background-color: transparent;
-      background-image:
-      linear-gradient(13deg, transparent, rgba(gray, 0.5) 50%);
-      transform-origin: 50% 0;
-      transform-style: preserve-3d;
-      transition: transform 0.3s;
-      transform: rotateX(0);
-      &:hover {
-        transform: rotateX(-10deg)
+      height: 40px;
+      padding: 5px;
+      text-align: right;
+      color: green;
+      font-size: 1.08em;
+      text-shadow: 0 0 2px rgba(lightgreen, 10%);
+      box-shadow: 
+      inset 0 0 10px 3px rgba(#fff, 0.2),
+      -1px 1px 5px 2px rgba($black, 0.5);
+      background-color: $black;
+    }
+    .inlet {
+      margin-right: 10px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 4px solid green;
+      border-left-color: darken(green, 5%);
+      border-bottom-color: darken(green, 5%);
+      box-shadow: 
+        inset 0 0 3px 2px $black,
+        -1px 1px 5px 2px rgba($black, 0.5);
+      background-color: gray;
+      background-image: 
+      linear-gradient(75deg, darken(gray, 10%), darken(gray, 15%) 45%, transparent 55%),
+      linear-gradient(45deg, darken(gray, 15%) 45%, rgba(#fff, 0.3), transparent 55%);
+      // radial-gradient(darken(gray, 20%), transparent);
+      position: relative;
+      &:after {
+        content: '';
+        width: 28px;
+        height: 4px;
+        background-color: $black;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
       }
     }
+    .switch_lever {
+      width: 60px;
+      height: 48px;
+      border-top-left-radius: 100px;
+      border-bottom-left-radius: 100px;
+      border-bottom-right-radius: 100px;
+      background-color: $black;
+      box-shadow: 
+        -1px 1px 5px 2px rgba($black, 0.5);
+      position: relative;
+      &:before {
+        content: '';
+        width: 38px;
+        height: 38px;
+        background-color: lighten($black, 10%);
+        position: absolute;
+        top: 50%;
+        left: 24px;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+      }
+      &:after {
+        content: '';
+        width: 30px;
+        height: 15px;
+        border-top-left-radius: 30%;
+        border-bottom-left-radius: 80%;
+        border-bottom-right-radius: 50%;
+        border-top-right-radius: 50%;
+        background-color: lighten($black, 30%);
+        background-image:
+          radial-gradient(circle at 25px 25px, transparent, lighten($black, 10%) 48%, transparent 52%),
+          radial-gradient(circle at 5px -15px, transparent, lighten($black, 10%) 48%, transparent 52%);
+        position: absolute;
+        top: 50%;
+        left: 24px;
+        transform: translateX(-50%) translateY(-50%) rotate(-45deg);
+        transition: transform 0.5s;
+      }
+      span {
+        position: absolute;
+        top: 2px;
+        right: 0;
+        font-size: 0.3em;
+        color: rgba(#fff, 0.5);
+        transform: rotateZ(45deg) scale(0.7); 
+      }
+      &:hover {
+        &:after {
+          transform: translateX(-50%) translateY(-50%) rotate(55deg);
+        }
+      }
+    }
+    .return_port {
+      align-self: flex-end;
+      width: 50px;
+      @include port-style(60px, 3px) {
+        font-size: 0.5em;
+      }
+    }
+  }
+  &__door {
+    width: 80%;
+    @include port-style(80px, 5px){
+      font-size: 1.5em;
+    }
+  }
+  $cooler-border-style: 3px solid;
+  $cooler-darken-color: darken($primary-color, 30%);
+  $cooler-lighten-color: darken($primary-color, 25%);
+  &__cooler {
+    width: 100%;
+    height: 30px;
+    border-top: $cooler-border-style darken($primary-color, 10%);
+    border-left: $cooler-border-style darken($primary-color, 15%);
+    border-right: $cooler-border-style darken($primary-color, 15%);
+    border-bottom: $cooler-border-style darken($primary-color, 20%);
+    background-color: $cooler-darken-color;
+    background-image: 
+       repeating-linear-gradient(180deg, transparent, transparent 20%, $cooler-lighten-color 20%, $cooler-lighten-color 25%),
+       repeating-linear-gradient(90deg, transparent, transparent 20%, $cooler-lighten-color 20%, $cooler-lighten-color 22%);
   }
 }
 
@@ -215,8 +366,9 @@ body {
     border: 2px solid lighten($black, 10%);
     background-color: $black;
     color: #fff;
-    padding: 0.3em 0;
+    padding: 0.3em 0.5em;
     font-family: $font-stack;
+    text-align: right;
     position: absolute;
     top: 100%;
     left: 50%;
