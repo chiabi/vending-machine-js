@@ -1,15 +1,21 @@
-type Drinks = {
+export type Drinks = {
   id: number;
   name: string;
   inventory: number;
   price: number;
 }
 
-const initialState: {
-  drinks: Array<Drinks>, 
-  wallet: number, 
-  coin: number
-} = {
+export type Coins = number;
+
+export type State = {
+  drinks: Array<Drinks>; 
+  outDrinks: Array<string>;
+  myWallet: Coins; 
+  availableCoin: Coins;
+  notAvailableCoin: Coins;
+} | {}
+
+const initialState: State = {
   drinks: [{
     id: 1,
     name: 'coca-cola',
@@ -51,8 +57,14 @@ const initialState: {
     inventory: 12,
     price: 650 
   }],
-  wallet: 1250,
-  coin: 0
+  outDrinks: [
+    // stack
+    // 'coca-cola',
+    // 'cider'
+  ],
+  myWallet: 1250,
+  availableCoin: 0,
+  notAvailableCoint: 0,
 };
 
 export default initialState;
