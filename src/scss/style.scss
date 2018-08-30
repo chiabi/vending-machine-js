@@ -83,6 +83,7 @@ body {
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
+  flex-shrink: 0;
   width: 400px;
   height: 700px;
   padding: 20px;
@@ -311,7 +312,6 @@ body {
   background-color: darken($primary-color, 35%);
 }
 .drink {
-  margin-bottom: 2.2;
   position: relative;
   &__item {
     width: 3em;
