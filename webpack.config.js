@@ -4,19 +4,23 @@ const path = require('path');
 
 module.exports = {
   mode: 'production',
-  entry: './src/app',
+  entry: './src/app.ts',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, './dist'),
     filename: 'bundle.js'
+  },
+  resolve: {
+    modules: ['node_modules'],
+    extensions: ['.ts', '.tsx', '.js', '.json']
   },
   module: {
     rules: [
-      {
-        test: /\.ts?$/,
-        loaders: ['babel-loader', 'ts-loader'],
-        exclude: /node_modules/
-      },
-      {
+      { 
+        test: /\.ts(x)?$/, 
+        use: { 
+          loader: 'awesome-typescript-loader' 
+        } 
+      },{
         test: /\.scss$/,
         use: [{
           // CSS를 DOM의 style태그에 출력한다
@@ -33,9 +37,6 @@ module.exports = {
         }]
       }
     ]
-  },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js']
   },
   devtool: 'source-map',  
 };

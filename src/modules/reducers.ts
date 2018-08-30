@@ -8,7 +8,7 @@ import {
 import { Drinks, Coins } from './initialState';
 import { Actions } from './actions';
 
-const myWallet = (state: Coins = 0, action: Actions) => {
+export const myWallet = (state: Coins = 0, action: Actions) => {
   switch (action.type) {
     case INPUT_COIN: 
       return state - action.coin;
@@ -19,7 +19,7 @@ const myWallet = (state: Coins = 0, action: Actions) => {
   }
 };
 
-const availableCoin = (state: Coins = 0, action: Actions) => {
+export const availableCoin = (state: Coins = 0, action: Actions) => {
   switch (action.type) {
     case INPUT_COIN: 
       return state + action.coin;
@@ -32,7 +32,7 @@ const availableCoin = (state: Coins = 0, action: Actions) => {
   }
 };
 
-const notAvailableCoin = (state: Coins = 0, action: Actions) => {
+export const notAvailableCoin = (state: Coins = 0, action: Actions) => {
   switch (action.type) {
     case RETURN_COIN: 
       return state + action.coin;
@@ -43,7 +43,7 @@ const notAvailableCoin = (state: Coins = 0, action: Actions) => {
   }
 };
 
-const drinks = (state: Array<Drinks> = [], action: Actions) => {
+export const drinks = (state: Array<Drinks> = [], action: Actions) => {
   switch (action.type) {
     case BUY_DRINK: 
       return state.map(item => item.id !== action.id ? 
@@ -57,13 +57,15 @@ const drinks = (state: Array<Drinks> = [], action: Actions) => {
   }
 }
 
-const outDrinks = (state: Array<string> = [], action: Actions) => {
+export const outDrinks = (state: Array<string> = [], action: Actions) => {
   switch (action.type) {
     case BUY_DRINK: 
       return [
         ...state,
         action.name
       ]
+    case TAKE_DRINKS: 
+      return [];
     default:
       return state;
   }

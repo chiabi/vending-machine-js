@@ -1,5 +1,12 @@
+import {} from 'redux';
+import {
+  myWallet,
+  availableCoin,
+  notAvailableCoin,
+  drinks,
+  outDrinks
+} from './modules/reducers'
 import './scss/style.scss';
 
-const [a, b]: [string, string] = ['app', 'vendor'];
-console.log(a);
-console.log(b);
+const a = 10;
+console.log(a)
