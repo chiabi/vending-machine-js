@@ -1,6 +1,8 @@
 import { createStore, compose } from 'redux';
 import {
-  inputCoin
+  inputCoin,
+  returnCoin,
+  takeCoin
 } from './modules/actions';
 import { Drinks, Coins, State } from './modules/initialState';
 import initialState from './modules/initialState';
@@ -25,6 +27,8 @@ const walletCoins: HTMLDivElement = wallet.querySelector('.wallet__coin');
 const machineUI: HTMLDivElement = machine.querySelector('.machine__ui');
 const machineCounter: HTMLDivElement = machineUI.querySelector('.counter');
 const machineInlet: HTMLDivElement = machineUI.querySelector('.inlet');
+const machineLever: HTMLDivElement = machineUI.querySelector('.switch_lever');
+const returnPort: HTMLDivElement = machineUI.querySelector('.return_port');
 
 const drinkName = (name: string) => {
   return name.split('-').map(item => 
@@ -95,18 +99,21 @@ const dragCoin = (
   });
 }
 
-machineInlet.addEventListener('dragover', e => {
-  e.preventDefault();
-});
-
-machineInlet.addEventListener('drop', e => {
-  e.preventDefault();
-  const data = Number(e.dataTransfer.getData('text/plain'));
-  if(typeof data === 'number' && !isNaN(data)) {
-    store.dispatch(inputCoin(data));
-    renderMachine();
-  }
-});
+const dropCoin = (
+  inletEl: HTMLDivElement
+) => {
+  inletEl.addEventListener('dragover', e => {
+    e.preventDefault();
+  });
+  
+  inletEl.addEventListener('drop', e => {
+    e.preventDefault();
+    const data = Number(e.dataTransfer.getData('text/plain'));
+    if(typeof data === 'number' && !isNaN(data)) {
+      store.dispatch(inputCoin(data));
+    }
+  });
+}
 
 const renderCoin = (
   context: HTMLDivElement,
@@ -131,17 +138,36 @@ const renderCoin = (
   context.appendChild(coinsEl);
 }
 
-const renderMachine = () => {
+const renderMachine = (state: any) => {
   const {
     drinks, 
     myWallet,
     availableCoin,
-  } = store.getState();
-
+  } = state;
   renderDrinks(machineDisplay, drinks, availableCoin);
   walletText(myWallet);
   renderCoin(walletCoins, myWallet);
   counterText(availableCoin);
 }
 
-renderMachine();
+const init = () => {
+  const state = store.getState();
+  renderMachine(state);
+  dropCoin(machineInlet);
+  machineLever.addEventListener('click', e => {
+    const availableCoin = store.getState().availableCoin;
+    machineLever.classList.add('switch_lever--turned');
+    availableCoin && returnPort.classList.add('return_port--turned');
+    store.dispatch(returnCoin(availableCoin));
+    window.setTimeout(() => {
+      machineLever.classList.remove('switch_lever--turned');
+      availableCoin && returnPort.classList.remove('return_port--turned');
+    }, 1000);
+  });
+  returnPort.addEventListener('click', e => {
+    store.dispatch(takeCoin(store.getState().notAvailableCoin));
+  });
+}
+
+init();
+store.subscribe(() => renderMachine(store.getState()));

@@ -260,17 +260,64 @@ body {
         color: rgba(#fff, 0.5);
         transform: rotateZ(45deg) scale(0.7); 
       }
-      &:hover {
+      &--turned {
         &:after {
           transform: translateX(-50%) translateY(-50%) rotate(55deg);
         }
       }
     }
     .return_port {
+      overflow: hidden;
       align-self: flex-end;
       width: 50px;
       @include port-style(60px, 3px) {
         font-size: 0.5em;
+      }
+      @at-root {
+        @keyframes coinDown1 {
+          0% {
+            transform: translateY(-100%) rotate(20deg);
+          }
+          50% {
+            transform: translateY(200%) rotate(70deg);
+          }
+          100% {
+            transform: translateY(200%) rotate(50deg);
+          }
+        }
+        @keyframes coinDown2 {
+          0% {
+            transform: translateY(-100%) rotate(-70deg);
+          }
+          99% {
+            transform: translateY(200%) rotate(-20deg);
+          }
+          100% {
+            transform: translateY(200%) rotate(-50deg);
+          }
+        }
+      }
+      &:before,
+      &:after {
+        content: '';
+        width: 5px;
+        height: 25px;
+        background-color: darken($yellow, 20%);
+        position: absolute;
+        top: 0;
+        left: 50%;
+      }
+      &:before {
+        transform: translateY(-100%) rotate(20deg);
+      }
+      &:after {
+        transform: translateY(-100%) rotate(-160deg);
+      }
+      &--turned:before {
+        animation: coinDown1 1s ease-in-out;
+      }
+      &--turned:after {
+        animation: coinDown2 1s ease-in-out;
       }
     }
   }
