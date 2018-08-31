@@ -38,7 +38,7 @@ const drinkTemplate = (drink: Drinks, availableCoin: Coins) => `
   <div 
     class="drink 
       ${drink.name} 
-      ${availableCoin >= drink.price ? 'is-can-buy' : ''}" 
+      ${availableCoin >= drink.price && drink.inventory > 0 ? 'is-can-buy' : ''}" 
     data-order="${drink.id}"
     >
     <div class="drink__item"><span>${drinkName(drink.name)}</span></div>
