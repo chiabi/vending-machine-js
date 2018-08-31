@@ -421,6 +421,13 @@ body {
     background-color: lighten($blue, 10%);
     color: darken($blue, 10%);
   }
+  &__total {
+    padding: 0.5em 0.8em;
+    color: #fff;
+    font-size: 1.2em;
+    text-align: right;
+    background-color: darken($blue, 10%);
+  }
   &__coin {
     @include flex-center;
     width: 100%;

@@ -5,13 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Vending Machine</title>
-  <script src="./bundle.js"></script>
 </head>
 <body>
   <div class="app">
     <div class="machine">
       <div class="machine__display">
-        <div class="display-shelf">
+        <!-- <div class="display-shelf">
           <div class="drink coca-cola is-can-buy" data-order="0">
             <div class="drink__item"><span>Coca Cola</span></div>
             <button class="btn-buy">700원</button>
@@ -46,7 +45,7 @@
             <div class="drink__item"><span>Orange Juice</span></div>
             <button class="btn-buy">700원</button>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="machine__ad"></div>
       <div class="machine__ui">
@@ -67,14 +66,16 @@
     <div class="user">
       <div class="wallet">
         <h2>My wallet</h2>
+        <div class="wallet__total"><span>10,000</span>원</div>
         <div class="wallet__coin">
-          <button class="coin coin__50" data-coin="50">50</button>
-          <button class="coin coin__100" data-coin="100">100</button>
-          <button class="coin coin__500" data-coin="500">500</button>
-          <button class="coin coin__1000" data-coin="1000">1000</button>
+          <button class="coin" data-coin="50">50</button>
+          <button class="coin" data-coin="100">100</button>
+          <button class="coin" data-coin="500">500</button>
+          <button class="coin" data-coin="1000">1000</button>
         </div>
       </div>
     </div>
   </div>
+  <script src="./bundle.js"></script>
 </body>
 </html>
