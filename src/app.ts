@@ -1,4 +1,7 @@
 import { createStore, compose } from 'redux';
+import {
+  inputCoin
+} from './modules/actions';
 import { Drinks, Coins, State } from './modules/initialState';
 import initialState from './modules/initialState';
 import reducer from './modules/reducers'
@@ -21,6 +24,7 @@ const walletTotal: HTMLDivElement = wallet.querySelector('.wallet__total');
 const walletCoins: HTMLDivElement = wallet.querySelector('.wallet__coin');
 const machineUI: HTMLDivElement = machine.querySelector('.machine__ui');
 const machineCounter: HTMLDivElement = machineUI.querySelector('.counter');
+const machineInlet: HTMLDivElement = machineUI.querySelector('.inlet');
 
 const drinkName = (name: string) => {
   return name.split('-').map(item => 
@@ -67,6 +71,7 @@ const renderDrinks = (
 const coinText = (context: HTMLDivElement, coin: Coins) => {
   let coinUnit: Array<string> = ('' + coin).split('');
   let l = coinUnit.length;
+  context.textContent = '';
   let thousandCoin: string = coinUnit.reduce((acc, coin, index) => 
     (index % 3 === (l % 3)) && (index !== 0) ? 
       acc + ',' + coin : 
@@ -80,10 +85,28 @@ const counterText = (coin: Coins) => coinText(machineCounter, coin);
 
 const dragCoin = (
   coinEl: HTMLButtonElement, 
-  inletEl: HTMLDivElement
 ) => {
-
+  coinEl.addEventListener('dragstart', (e: any) => {
+    e.dataTransfer.setData('text/plain', e.target.dataset['coin']);
+    e.target.style.opacity = .5;
+  });
+  coinEl.addEventListener('dragend', (e: any) => {
+    e.target.style.opacity = 1;
+  });
 }
+
+machineInlet.addEventListener('dragover', e => {
+  e.preventDefault();
+});
+
+machineInlet.addEventListener('drop', e => {
+  e.preventDefault();
+  const data = Number(e.dataTransfer.getData('text/plain'));
+  if(typeof data === 'number' && !isNaN(data)) {
+    store.dispatch(inputCoin(data));
+    renderMachine();
+  }
+});
 
 const renderCoin = (
   context: HTMLDivElement,
@@ -100,14 +123,15 @@ const renderCoin = (
     if((myWallet - coin) < 0 ) {
       buttonEl.setAttribute('disabled', 'true');
     } else {
-      // buttonEl.addEventListener()
+      buttonEl.setAttribute('draggable', 'true');
+      dragCoin(buttonEl);
     }
     coinsEl.appendChild(buttonEl);
   });
   context.appendChild(coinsEl);
 }
 
-const init = () => {
+const renderMachine = () => {
   const {
     drinks, 
     myWallet,
@@ -120,4 +144,4 @@ const init = () => {
   counterText(availableCoin);
 }
 
-init();
+renderMachine();

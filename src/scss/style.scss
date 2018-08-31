@@ -39,6 +39,7 @@ $drink-items: (
 *:before,
 *:after {
   box-sizing: border-box;
+  user-select: none;
 }
 body {
   background-color: lighten($black, 10%);
@@ -468,5 +469,8 @@ $coin-shadow: $coin-style darken($yellow, 15%);
   }
   &:disabled {
     opacity: 0.5;
+  }
+  &:focus {
+    outline: none;
   }
 }
