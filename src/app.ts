@@ -31,10 +31,9 @@ const drinkTemplate = (drink: Drinks, availableCoin: Coins) => `
       ${drink.name} 
       ${availableCoin >= drink.price ? 'is-can-buy' : ''}" 
     data-order="${drink.id}"
-    ${drink.inventory > 0 ? '' : 'disabled'}
     >
     <div class="drink__item"><span>${drinkName(drink.name)}</span></div>
-    <button class="btn-buy">${drink.price}원</button>
+    <button class="btn-buy" ${drink.inventory > 0 ? '' : 'disabled'}>${drink.price}원</button>
   </div>
 `;
 
@@ -55,4 +54,8 @@ const renderDrinks = (context: HTMLDivElement, drinks: Array<Drinks>, availableC
   });
 }
 
-renderDrinks(machineDisplay, store.getState().drinks, store.getState().availableCoin);
+const init = () => {
+  renderDrinks(machineDisplay, store.getState().drinks, store.getState().availableCoin);
+}
+
+init();
