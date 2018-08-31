@@ -24,7 +24,7 @@ const initialState: State = {
   },{
     id: 2,
     name: 'cider',
-    inventory: 5,
+    inventory: 0,
     price: 800 
   },{
     id: 3,
@@ -62,7 +62,7 @@ const initialState: State = {
     // 'coca-cola',
     // 'cider'
   ],
-  myWallet: 1250,
+  myWallet: 12500,
   availableCoin: 0,
   notAvailableCoint: 0,
 };

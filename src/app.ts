@@ -16,6 +16,11 @@ console.log(store.getState());
 
 const machine: HTMLDivElement = document.querySelector('.machine');
 const machineDisplay: HTMLDivElement = machine.querySelector('.machine__display');
+const wallet: HTMLDivElement = document.querySelector('.wallet');
+const walletTotal: HTMLDivElement = wallet.querySelector('.wallet__total');
+const walletCoins: HTMLDivElement = wallet.querySelector('.wallet__coin');
+const machineUI: HTMLDivElement = machine.querySelector('.machine__ui');
+const machineCounter: HTMLDivElement = machineUI.querySelector('.counter');
 
 const drinkName = (name: string) => {
   return name.split('-').map(item => 
@@ -37,9 +42,14 @@ const drinkTemplate = (drink: Drinks, availableCoin: Coins) => `
   </div>
 `;
 
-const renderDrinks = (context: HTMLDivElement, drinks: Array<Drinks>, availableCoin: Coins) => {
+const renderDrinks = (
+  context: HTMLDivElement, 
+  drinks: Array<Drinks>, 
+  availableCoin: Coins
+) => {
   let shelfEl: HTMLDivElement;
   let drinksEl: string = '';
+  context.textContent = '';
   drinks.forEach((drink, index) => {
     if(index % 4 === 0) {
       shelfEl = document.createElement('div');
@@ -54,8 +64,60 @@ const renderDrinks = (context: HTMLDivElement, drinks: Array<Drinks>, availableC
   });
 }
 
+const coinText = (context: HTMLDivElement, coin: Coins) => {
+  let coinUnit: Array<string> = ('' + coin).split('');
+  let l = coinUnit.length;
+  let thousandCoin: string = coinUnit.reduce((acc, coin, index) => 
+    (index % 3 === (l % 3)) && (index !== 0) ? 
+      acc + ',' + coin : 
+      acc + coin, ''
+  );
+  context.textContent = `${thousandCoin}원`
+};
+
+const walletText = (coin: Coins) => coinText(walletTotal, coin);
+const counterText = (coin: Coins) => coinText(machineCounter, coin);
+
+const dragCoin = (
+  coinEl: HTMLButtonElement, 
+  inletEl: HTMLDivElement
+) => {
+
+}
+
+const renderCoin = (
+  context: HTMLDivElement,
+  myWallet: Coins
+) => {
+  const kind = [50, 100, 500, 1000];
+  const coinsEl: DocumentFragment = document.createDocumentFragment();
+  context.textContent = '';
+  kind.forEach((coin) => {
+    const buttonEl: HTMLButtonElement = document.createElement('button');
+    buttonEl.classList.add('coin');
+    buttonEl.setAttribute('data-coin', '' + coin);
+    buttonEl.textContent = '' + coin;
+    if((myWallet - coin) < 0 ) {
+      buttonEl.setAttribute('disabled', 'true');
+    } else {
+      // buttonEl.addEventListener()
+    }
+    coinsEl.appendChild(buttonEl);
+  });
+  context.appendChild(coinsEl);
+}
+
 const init = () => {
-  renderDrinks(machineDisplay, store.getState().drinks, store.getState().availableCoin);
+  const {
+    drinks, 
+    myWallet,
+    availableCoin,
+  } = store.getState();
+
+  renderDrinks(machineDisplay, drinks, availableCoin);
+  walletText(myWallet);
+  renderCoin(walletCoins, myWallet);
+  counterText(availableCoin);
 }
 
 init();
