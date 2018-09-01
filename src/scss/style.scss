@@ -274,7 +274,7 @@ body {
         font-size: 0.5em;
       }
       @at-root {
-        @keyframes coinDown1 {
+        @keyframes itemDown1 {
           0% {
             transform: translateY(-100%) rotate(20deg);
           }
@@ -285,7 +285,7 @@ body {
             transform: translateY(200%) rotate(50deg);
           }
         }
-        @keyframes coinDown2 {
+        @keyframes itemDown2 {
           0% {
             transform: translateY(-100%) rotate(-70deg);
           }
@@ -314,17 +314,41 @@ body {
         transform: translateY(-100%) rotate(-160deg);
       }
       &--turned:before {
-        animation: coinDown1 1s ease-in-out;
+        animation: itemDown1 1s ease-in-out;
       }
       &--turned:after {
-        animation: coinDown2 1s ease-in-out;
+        animation: itemDown2 1s ease-in-out;
       }
     }
   }
   &__door {
+    overflow: hidden;
     width: 80%;
     @include port-style(80px, 5px){
       font-size: 1.5em;
+    }
+    &:before {
+      content: '';
+      width: 40px;
+      height: 65px;
+      background-color: $blue;
+      position: absolute;
+      top: 0;
+      left: 50%;
+    }
+    &:before {
+      transform: translateY(-120%) rotate(20deg);
+    }
+    @each $name, $color in $drink-items {
+      &.#{$name}:before {
+        background-color: $color;
+        background-image: 
+        linear-gradient(180deg, darken($color, 20%) 0.3em, darken($color, 20%) 0.3em, transparent 0.4em, transparent),
+        linear-gradient(90deg, darken($color, 20%) 20%, $color, rgba(#fff, 0.5), darken($color, 20%));
+      }
+    }
+    &--down:before {
+      animation: itemDown1 1.5s ease-out;
     }
   }
   $cooler-border-style: 3px solid;

@@ -24,7 +24,7 @@ const initialState: State = {
   },{
     id: 2,
     name: 'cider',
-    inventory: 0,
+    inventory: 1,
     price: 800 
   },{
     id: 3,
@@ -49,7 +49,7 @@ const initialState: State = {
   },{
     id: 7,
     name: 'grape-juice',
-    inventory: 12,
+    inventory: 0,
     price: 650 
   },{
     id: 8,

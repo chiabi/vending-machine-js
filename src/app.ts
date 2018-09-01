@@ -2,7 +2,8 @@ import { createStore, compose } from 'redux';
 import {
   inputCoin,
   returnCoin,
-  takeCoin
+  takeCoin,
+  buyDrink
 } from './modules/actions';
 import { Drinks, Coins, State } from './modules/initialState';
 import initialState from './modules/initialState';
@@ -31,6 +32,7 @@ const machineCounter: HTMLDivElement = machineUI.querySelector('.counter');
 const machineInlet: HTMLDivElement = machineUI.querySelector('.inlet');
 const machineLever: HTMLDivElement = machineUI.querySelector('.switch_lever');
 const returnPort: HTMLDivElement = machineUI.querySelector('.return_port');
+const machineDoor: HTMLDivElement = machine.querySelector('.machine__door');
 
 const drinkName = (name: string) => {
   return name.split('-').map(item => 
@@ -48,9 +50,27 @@ const drinkTemplate = (drink: Drinks, availableCoin: Coins) => `
     data-order="${drink.id}"
     >
     <div class="drink__item"><span>${drinkName(drink.name)}</span></div>
-    <button class="btn-buy" ${drink.inventory > 0 ? '' : 'disabled'}>${drink.price}원</button>
+    <button 
+      class="btn-buy" 
+      ${drink.inventory > 0 ?
+         '' : 
+         'disabled'}
+    >${drink.price}원</button>
   </div>
 `;
+
+const buttonEvent = (drink: Drinks) => {
+  const {
+    id,
+    name,
+    price
+  } = drink;
+  machineDoor.classList.add('name', 'machine__door--down', drink.name);
+  store.dispatch(buyDrink(id, name, price));
+  window.setTimeout(() => {
+    machineDoor.classList.remove('machine__door--down', drink.name);
+  }, 1500);
+}
 
 const renderDrinks = (
   context: HTMLDivElement, 
@@ -58,17 +78,28 @@ const renderDrinks = (
   availableCoin: Coins
 ) => {
   let shelfEl: HTMLDivElement;
-  let drinksEl: string = '';
+  // let drinksEl: string = '';
   context.textContent = '';
+  
   drinks.forEach((drink, index) => {
     if(index % 4 === 0) {
       shelfEl = document.createElement('div');
       shelfEl.classList.add('display-shelf');
     }
-    drinksEl += drinkTemplate(drink, availableCoin);
+    const drinkEl: HTMLDivElement = document.createElement('div');
+    drinkEl.innerHTML = drinkTemplate(drink, availableCoin);
+    drinkEl.classList.add('drink', drink.name);
+    if (availableCoin >= drink.price && drink.inventory) {
+      drinkEl.classList.add('is-can-buy');
+      drinkEl.querySelector('.btn-buy').addEventListener('click', () => {
+        buttonEvent(drink);
+      })
+    }
+    shelfEl.appendChild(drinkEl);
+    // drinksEl += drinkTemplate(drink, availableCoin);
     if(index % 4 === 3) {
-      shelfEl.innerHTML = drinksEl;
-      drinksEl = '';
+      // shelfEl.innerHTML = drinksEl;
+      // drinksEl = '';
       context.appendChild(shelfEl);
     }
   });
