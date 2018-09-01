@@ -24,6 +24,8 @@ const machineDisplay: HTMLDivElement = machine.querySelector('.machine__display'
 const wallet: HTMLDivElement = document.querySelector('.wallet');
 const walletTotal: HTMLDivElement = wallet.querySelector('.wallet__total');
 const walletCoins: HTMLDivElement = wallet.querySelector('.wallet__coin');
+const walletPlus: HTMLDivElement = wallet.querySelector('.wallet__plus');
+const walletPlusCoin: HTMLDivElement = walletPlus.querySelector('.plus');
 const machineUI: HTMLDivElement = machine.querySelector('.machine__ui');
 const machineCounter: HTMLDivElement = machineUI.querySelector('.counter');
 const machineInlet: HTMLDivElement = machineUI.querySelector('.inlet');
@@ -150,23 +152,34 @@ const renderMachine = (state: any) => {
   counterText(availableCoin);
 }
 
+const returnCoinEvent = (e: Event) => {
+  const availableCoin = store.getState().availableCoin;
+  machineLever.classList.add('switch_lever--turned');
+  availableCoin && returnPort.classList.add('return_port--turned');
+  store.dispatch(returnCoin(availableCoin));
+  window.setTimeout(() => {
+    machineLever.classList.remove('switch_lever--turned');
+    availableCoin && returnPort.classList.remove('return_port--turned');
+  }, 1000);
+}
+
+const takeCoinEvent = (e: Event) => {
+  const notAvailableCoin = store.getState().notAvailableCoin;
+  walletPlusCoin.textContent = `+ ${notAvailableCoin}`;
+  walletPlus.classList.add('wallet__plus--show');
+  store.dispatch(takeCoin(notAvailableCoin));
+  window.setTimeout(() => {
+    walletPlus.classList.remove('wallet__plus--show');
+    walletPlusCoin.textContent = '';
+  }, 1100);
+}
+
 const init = () => {
   const state = store.getState();
   renderMachine(state);
   dropCoin(machineInlet);
-  machineLever.addEventListener('click', e => {
-    const availableCoin = store.getState().availableCoin;
-    machineLever.classList.add('switch_lever--turned');
-    availableCoin && returnPort.classList.add('return_port--turned');
-    store.dispatch(returnCoin(availableCoin));
-    window.setTimeout(() => {
-      machineLever.classList.remove('switch_lever--turned');
-      availableCoin && returnPort.classList.remove('return_port--turned');
-    }, 1000);
-  });
-  returnPort.addEventListener('click', e => {
-    store.dispatch(takeCoin(store.getState().notAvailableCoin));
-  });
+  machineLever.addEventListener('click', returnCoinEvent);
+  returnPort.addEventListener('click', takeCoinEvent);
 }
 
 init();
