@@ -43,20 +43,18 @@ const drinkName = (name: string) => {
 };
 
 const drinkTemplate = (drink: Drinks, availableCoin: Coins) => `
-  <div 
-    class="drink 
-      ${drink.name} 
-      ${availableCoin >= drink.price && drink.inventory > 0 ? 'is-can-buy' : ''}" 
-    data-order="${drink.id}"
-    >
-    <div class="drink__item"><span>${drinkName(drink.name)}</span></div>
-    <button 
-      class="btn-buy" 
-      ${drink.inventory > 0 ?
-         '' : 
-         'disabled'}
-    >${drink.price}원</button>
-  </div>
+  <div class="drink__item"><span>${drinkName(drink.name)}</span></div>
+  <button 
+    class="btn-buy" 
+    ${drink.inventory > 0 ?
+        '' : 
+        'disabled'}
+  >${drink.price}원</button>
+`;
+
+const myDrinkTemplate = (drink: Drinks) => `
+  <div class="drink__item"><span>${drinkName(drink.name)}</span></div>
+  <div class="drink__inventory">x ${drink.inventory}</div>
 `;
 
 const buttonEvent = (drink: Drinks) => {
@@ -103,6 +101,10 @@ const renderDrinks = (
       context.appendChild(shelfEl);
     }
   });
+}
+
+const renderMyDrink = () => {
+
 }
 
 const coinText = (context: HTMLDivElement, coin: Coins) => {

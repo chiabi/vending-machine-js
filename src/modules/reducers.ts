@@ -6,7 +6,7 @@ import {
   BUY_DRINK,
   TAKE_DRINKS
 } from './constants';
-import { Drinks, Coins } from './initialState';
+import { Drinks, MyDrinks, Coins } from './initialState';
 import { Actions } from './actions';
 
 const myWallet = (state: Coins = 0, action: Actions) => {
@@ -58,13 +58,29 @@ const drinks = (state: Array<Drinks> = [], action: Actions) => {
   }
 }
 
-const outDrinks = (state: Array<string> = [], action: Actions) => {
+const outDrinks = (state: Array<MyDrinks> = [], action: Actions) => {
   switch (action.type) {
     case BUY_DRINK: 
-      return [
-        ...state,
-        action.name
-      ]
+      if(state.length > 0) {
+        if(state.findIndex((item: MyDrinks) => item.id === action.id) !== -1) {
+          return [
+            ...state,
+            [{
+              id: action.id,
+              name: action.name,
+              inventory: 1
+            }];
+          ]
+        } 
+          
+      } else {
+        return [{
+          id: action.id,
+          name: action.name,
+          inventory: 1
+        }];
+      }
+      // return state.map(item => item.id !== action.id)
     case TAKE_DRINKS: 
       return [];
     default:

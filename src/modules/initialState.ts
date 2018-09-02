@@ -5,11 +5,18 @@ export type Drinks = {
   price: number;
 }
 
+export type MyDrinks = {
+  id: number;
+  name: string;
+  inventory: number;
+} | {}
+
 export type Coins = number;
 
 export type State = {
   drinks: Array<Drinks>; 
-  outDrinks: Array<string>;
+  outDrinks: Array<MyDrinks>;
+  myInventory: Array<MyDrinks>;
   myWallet: Coins; 
   availableCoin: Coins;
   notAvailableCoin: Coins;
@@ -57,11 +64,8 @@ const initialState: State = {
     inventory: 12,
     price: 650 
   }],
-  outDrinks: [
-    // stack
-    // 'coca-cola',
-    // 'cider'
-  ],
+  outDrinks: [],
+  myInventory: [],
   myWallet: 12500,
   availableCoin: 0,
   notAvailableCoint: 0,
