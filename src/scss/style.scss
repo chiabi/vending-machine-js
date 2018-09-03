@@ -279,10 +279,10 @@ body {
             transform: translateY(-100%) rotate(20deg);
           }
           50% {
-            transform: translateY(200%) rotate(70deg);
+            transform: translateY(150%) rotate(70deg);
           }
           100% {
-            transform: translateY(200%) rotate(50deg);
+            transform: translateY(150%) rotate(50deg);
           }
         }
         @keyframes itemDown2 {
@@ -290,10 +290,10 @@ body {
             transform: translateY(-100%) rotate(-70deg);
           }
           99% {
-            transform: translateY(200%) rotate(-20deg);
+            transform: translateY(150%) rotate(-20deg);
           }
           100% {
-            transform: translateY(200%) rotate(-50deg);
+            transform: translateY(150%) rotate(-50deg);
           }
         }
       }
@@ -327,28 +327,25 @@ body {
     @include port-style(80px, 5px){
       font-size: 1.5em;
     }
-    &:before {
-      content: '';
+    .drink__item {
       width: 40px;
       height: 65px;
       background-color: $blue;
       position: absolute;
       top: 0;
-      left: 50%;
-    }
-    &:before {
-      transform: translateY(-120%) rotate(20deg);
-    }
-    @each $name, $color in $drink-items {
-      &.#{$name}:before {
-        background-color: $color;
-        background-image: 
-        linear-gradient(180deg, darken($color, 20%) 0.3em, darken($color, 20%) 0.3em, transparent 0.4em, transparent),
-        linear-gradient(90deg, darken($color, 20%) 20%, $color, rgba(#fff, 0.5), darken($color, 20%));
+      left: 0;
+      @each $name, $color in $drink-items {
+        &.#{$name} {
+          transform: translateY(50%) rotate(#{random() * 100}deg);
+          background-color: $color;
+          background-image: 
+          linear-gradient(180deg, darken($color, 20%) 0.3em, darken($color, 20%) 0.3em, transparent 0.4em, transparent),
+          linear-gradient(90deg, darken($color, 20%) 20%, $color, rgba(#fff, 0.5), darken($color, 20%));
+        }
       }
-    }
-    &--down:before {
-      animation: itemDown1 1.5s ease-out;
+      &--down {
+        animation: itemDown1 1.5s ease-out;
+      }
     }
   }
   $cooler-border-style: 3px solid;

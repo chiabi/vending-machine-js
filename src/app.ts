@@ -19,7 +19,7 @@ const store = createStore(
   composeEnhancers()
 );
 
-console.log(store.getState());
+// console.log(store.getState());
 
 const machine: HTMLDivElement = document.querySelector('.machine');
 const machineDisplay: HTMLDivElement = machine.querySelector('.machine__display');
@@ -34,6 +34,7 @@ const machineInlet: HTMLDivElement = machineUI.querySelector('.inlet');
 const machineLever: HTMLDivElement = machineUI.querySelector('.switch_lever');
 const returnPort: HTMLDivElement = machineUI.querySelector('.return_port');
 const machineDoor: HTMLDivElement = machine.querySelector('.machine__door');
+const machineDoorOutlet: HTMLDivElement = machineDoor.querySelector('.outlet');
 const inventory: HTMLDivElement = document.querySelector('.inventory__drinks');
 
 const drinkName = (name: string) => {
@@ -65,10 +66,13 @@ const buttonEvent = (drink: Drinks) => {
     name,
     price
   } = drink;
-  machineDoor.classList.add('machine__door--down', drink.name);
+  const dropDrinkEl = document.createElement('div');
+  dropDrinkEl.classList.add('drink__item', drink.name, 'drink__item--down');
+  dropDrinkEl.style.left = `${Math.floor(Math.random() * 250)}px`;
+  machineDoorOutlet.appendChild(dropDrinkEl);
   store.dispatch(buyDrink(id, name, price));
   window.setTimeout(() => {
-    machineDoor.classList.remove('machine__door--down', drink.name);
+    dropDrinkEl.classList.remove('drink__item--down');
   }, 1500);
 }
 
@@ -78,7 +82,6 @@ const renderDrinks = (
   availableCoin: Coins
 ) => {
   let shelfEl: HTMLDivElement;
-  // let drinksEl: string = '';
   context.textContent = '';
   
   drinks.forEach((drink, index) => {
@@ -96,7 +99,6 @@ const renderDrinks = (
       })
     }
     shelfEl.appendChild(drinkEl);
-    // drinksEl += drinkTemplate(drink, availableCoin);
     if(index % 4 === 3) {
       context.appendChild(shelfEl);
     }
@@ -184,6 +186,37 @@ const renderCoin = (
   context.appendChild(coinsEl);
 }
 
+const returnCoinEvent = () => {
+  const leverActiveClass = 'switch_lever--turned';
+  const portActiveClass = 'return_port--turned';
+  const availableCoin = store.getState().availableCoin;
+  machineLever.classList.add(leverActiveClass);
+  availableCoin && returnPort.classList.add(portActiveClass);
+  store.dispatch(returnCoin(availableCoin));
+  window.setTimeout(() => {
+    machineLever.classList.remove(leverActiveClass);
+    availableCoin && returnPort.classList.remove(portActiveClass);
+  }, 1000);
+}
+
+const takeCoinEvent = () => {
+  const activeClass = 'wallet__plus--show';
+  const notAvailableCoin = store.getState().notAvailableCoin;
+  walletPlusCoin.textContent = `+ ${notAvailableCoin}`;
+  walletPlus.classList.add(activeClass);
+  store.dispatch(takeCoin(notAvailableCoin));
+  window.setTimeout(() => {
+    walletPlus.classList.remove(activeClass);
+    walletPlusCoin.textContent = '';
+  }, 1100);
+}
+
+const takeDrinkEvent = () => {
+  const outDrinks = store.getState().outDrinks;
+  store.dispatch(takeDrinks(outDrinks))
+  machineDoorOutlet.textContent = '';
+}
+
 const renderMachine = (state: any) => {
   const {
     drinks, 
@@ -198,33 +231,6 @@ const renderMachine = (state: any) => {
   counterText(availableCoin);
 }
 
-const returnCoinEvent = (e: Event) => {
-  const availableCoin = store.getState().availableCoin;
-  machineLever.classList.add('switch_lever--turned');
-  availableCoin && returnPort.classList.add('return_port--turned');
-  store.dispatch(returnCoin(availableCoin));
-  window.setTimeout(() => {
-    machineLever.classList.remove('switch_lever--turned');
-    availableCoin && returnPort.classList.remove('return_port--turned');
-  }, 1000);
-}
-
-const takeCoinEvent = (e: Event) => {
-  const notAvailableCoin = store.getState().notAvailableCoin;
-  walletPlusCoin.textContent = `+ ${notAvailableCoin}`;
-  walletPlus.classList.add('wallet__plus--show');
-  store.dispatch(takeCoin(notAvailableCoin));
-  window.setTimeout(() => {
-    walletPlus.classList.remove('wallet__plus--show');
-    walletPlusCoin.textContent = '';
-  }, 1100);
-}
-
-const takeDrinkEvent = (e: Event) => {
-  const outDrinks = store.getState().outDrinks;
-  store.dispatch(takeDrinks(outDrinks))
-}
-
 const init = () => {
   const state = store.getState();
   renderMachine(state);
@@ -234,5 +240,5 @@ const init = () => {
   machineDoor.addEventListener('click', takeDrinkEvent);
 }
 
-init();
 store.subscribe(() => renderMachine(store.getState()));
+init();
