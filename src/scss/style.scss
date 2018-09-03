@@ -46,8 +46,8 @@ body {
   font-family: $font-stack;
 }
 .app {
-  // display: flex;
   @include flex-center;
+  padding: 30px;
 }
 
 @mixin port-style($port-height, $port-border, $door-class: 'door') {
