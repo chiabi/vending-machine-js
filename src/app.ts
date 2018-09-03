@@ -65,7 +65,7 @@ const buttonEvent = (drink: Drinks) => {
     name,
     price
   } = drink;
-  machineDoor.classList.add('name', 'machine__door--down', drink.name);
+  machineDoor.classList.add('machine__door--down', drink.name);
   store.dispatch(buyDrink(id, name, price));
   window.setTimeout(() => {
     machineDoor.classList.remove('machine__door--down', drink.name);

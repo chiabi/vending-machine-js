@@ -55,7 +55,7 @@ const initialState: State = {
   },{
     id: 7,
     name: 'grape-juice',
-    inventory: 0,
+    inventory: 3,
     price: 650 
   },{
     id: 8,
