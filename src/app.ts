@@ -98,8 +98,6 @@ const renderDrinks = (
     shelfEl.appendChild(drinkEl);
     // drinksEl += drinkTemplate(drink, availableCoin);
     if(index % 4 === 3) {
-      // shelfEl.innerHTML = drinksEl;
-      // drinksEl = '';
       context.appendChild(shelfEl);
     }
   });
@@ -222,13 +220,18 @@ const takeCoinEvent = (e: Event) => {
   }, 1100);
 }
 
+const takeDrinkEvent = (e: Event) => {
+  const outDrinks = store.getState().outDrinks;
+  store.dispatch(takeDrinks(outDrinks))
+}
+
 const init = () => {
   const state = store.getState();
   renderMachine(state);
   dropCoin(machineInlet);
   machineLever.addEventListener('click', returnCoinEvent);
   returnPort.addEventListener('click', takeCoinEvent);
-  store.dispatch(takeDrinks(['coca-cola', 'cider' ,'fanta', 'coca-cola', 'fanta', 'coca-cola']))
+  machineDoor.addEventListener('click', takeDrinkEvent);
 }
 
 init();

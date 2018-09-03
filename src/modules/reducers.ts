@@ -72,7 +72,7 @@ const outDrinks = (state: Array<string> = [], action: Actions) => {
   }
 }
 
-const myDrinks = (state: MyDrinks = {}, action: Actions) => {
+const myInventory = (state: MyDrinks = {}, action: Actions) => {
   switch (action.type) {
     case TAKE_DRINKS:
       return action.drinks.reduce((acc: MyDrinks, item: string) => {
@@ -95,5 +95,5 @@ export default combineReducers({
   notAvailableCoin,
   drinks,
   outDrinks,
-  myDrinks
+  myInventory
 });
