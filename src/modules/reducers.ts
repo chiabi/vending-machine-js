@@ -58,32 +58,33 @@ const drinks = (state: Array<Drinks> = [], action: Actions) => {
   }
 }
 
-const outDrinks = (state: Array<MyDrinks> = [], action: Actions) => {
+const outDrinks = (state: Array<string> = [], action: Actions) => {
   switch (action.type) {
     case BUY_DRINK: 
-      if(state.length > 0) {
-        if(state.findIndex((item: MyDrinks) => item.id === action.id) !== -1) {
-          return [
-            ...state,
-            [{
-              id: action.id,
-              name: action.name,
-              inventory: 1
-            }];
-          ]
-        } 
-          
-      } else {
-        return [{
-          id: action.id,
-          name: action.name,
-          inventory: 1
-        }];
-      }
-      // return state.map(item => item.id !== action.id)
+      return [
+        ...state,
+        action.name
+      ]
     case TAKE_DRINKS: 
       return [];
     default:
+      return state;
+  }
+}
+
+const myDrinks = (state: MyDrinks = {}, action: Actions) => {
+  switch (action.type) {
+    case TAKE_DRINKS:
+      return action.drinks.reduce((acc: MyDrinks, item: string) => {
+        return !acc[item] ? {
+            ...acc,
+            [item]: 1
+          } : {
+            ...acc,
+            [item]: acc[item] + 1
+          }
+        }, state)
+    default: 
       return state;
   }
 }
@@ -93,5 +94,6 @@ export default combineReducers({
   availableCoin,
   notAvailableCoin,
   drinks,
-  outDrinks
+  outDrinks,
+  myDrinks
 });

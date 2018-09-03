@@ -3,9 +3,10 @@ import {
   inputCoin,
   returnCoin,
   takeCoin,
-  buyDrink
+  buyDrink,
+  takeDrinks
 } from './modules/actions';
-import { Drinks, Coins, State } from './modules/initialState';
+import { Drinks, MyDrinks, Coins } from './modules/initialState';
 import initialState from './modules/initialState';
 import reducer from './modules/reducers'
 import './scss/style.scss';
@@ -33,6 +34,7 @@ const machineInlet: HTMLDivElement = machineUI.querySelector('.inlet');
 const machineLever: HTMLDivElement = machineUI.querySelector('.switch_lever');
 const returnPort: HTMLDivElement = machineUI.querySelector('.return_port');
 const machineDoor: HTMLDivElement = machine.querySelector('.machine__door');
+const inventory: HTMLDivElement = document.querySelector('.inventory__drinks');
 
 const drinkName = (name: string) => {
   return name.split('-').map(item => 
@@ -52,9 +54,9 @@ const drinkTemplate = (drink: Drinks, availableCoin: Coins) => `
   >${drink.price}원</button>
 `;
 
-const myDrinkTemplate = (drink: Drinks) => `
-  <div class="drink__item"><span>${drinkName(drink.name)}</span></div>
-  <div class="drink__inventory">x ${drink.inventory}</div>
+const myDrinkTemplate = (key: string, value: number) => `
+  <div class="drink__item"><span>${drinkName(key)}</span></div>
+  <div class="drink__inventory">x ${value}</div>
 `;
 
 const buttonEvent = (drink: Drinks) => {
@@ -103,8 +105,19 @@ const renderDrinks = (
   });
 }
 
-const renderMyDrink = () => {
-
+const renderMyDrinks = (
+  context: HTMLDivElement, 
+  myDrinks: MyDrinks
+) => {
+  context.textContent = '';
+  const fragment: DocumentFragment = document.createDocumentFragment();
+  for (const [key, value] of Object.entries(myDrinks)) {
+    const drinkEl: HTMLDivElement = document.createElement('div');
+    drinkEl.innerHTML = myDrinkTemplate(key, value);
+    drinkEl.classList.add('drink', key);
+    fragment.appendChild(drinkEl);
+  }
+  context.appendChild(fragment);
 }
 
 const coinText = (context: HTMLDivElement, coin: Coins) => {
@@ -177,9 +190,11 @@ const renderMachine = (state: any) => {
   const {
     drinks, 
     myWallet,
+    myInventory,
     availableCoin,
   } = state;
   renderDrinks(machineDisplay, drinks, availableCoin);
+  renderMyDrinks(inventory, myInventory);
   walletText(myWallet);
   renderCoin(walletCoins, myWallet);
   counterText(availableCoin);
@@ -213,6 +228,7 @@ const init = () => {
   dropCoin(machineInlet);
   machineLever.addEventListener('click', returnCoinEvent);
   returnPort.addEventListener('click', takeCoinEvent);
+  store.dispatch(takeDrinks(['coca-cola', 'cider' ,'fanta', 'coca-cola', 'fanta', 'coca-cola']))
 }
 
 init();

@@ -5,18 +5,17 @@ export type Drinks = {
   price: number;
 }
 
-export type MyDrinks = {
-  id: number;
-  name: string;
-  inventory: number;
-} | {}
+interface DrinksHash<T> {
+  [key: string]: T;
+}
+export type MyDrinks = DrinksHash<number>
 
 export type Coins = number;
 
 export type State = {
   drinks: Array<Drinks>; 
-  outDrinks: Array<MyDrinks>;
-  myInventory: Array<MyDrinks>;
+  outDrinks: Array<string>;
+  myInventory: MyDrinks;
   myWallet: Coins; 
   availableCoin: Coins;
   notAvailableCoin: Coins;
@@ -64,8 +63,12 @@ const initialState: State = {
     inventory: 12,
     price: 650 
   }],
-  outDrinks: [],
-  myInventory: [],
+  outDrinks: [
+  ],
+  myInventory: {
+    // '1': {name: 'coca-cola', inventory: 1},
+    // '2': {name: 'cider', inventory: 2},
+  },
   myWallet: 12500,
   availableCoin: 0,
   notAvailableCoint: 0,

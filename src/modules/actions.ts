@@ -53,9 +53,13 @@ export const buyDrink: (
 
 export type TakeDrinks = {
   type: TAKE_DRINKS;
+  drinks: Array<string>
 }
-export const takeDrink: () => TakeDrinks = () => ({
-  type: TAKE_DRINKS
+export const takeDrinks: (
+  drinks: Array<string>
+) => TakeDrinks = (drinks) => ({
+  type: TAKE_DRINKS,
+  drinks
 });
 
 export type Actions = InputCoin | ReturnCoin | TakeCoin | BuyDrink | TakeDrinks
