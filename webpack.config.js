@@ -18,7 +18,17 @@ module.exports = {
       { 
         test: /\.ts(x)?$/, 
         use: { 
-          loader: 'awesome-typescript-loader' 
+          loader: 'awesome-typescript-loader',
+          options: {
+            useBabel: true,
+            babelOptions: {
+              babelrc: false,
+              presets: [
+                ["@babel/preset-env"]
+              ]
+            },
+            babelCore: "@babel/core",
+          }
         } 
       },{
         test: /\.scss$/,

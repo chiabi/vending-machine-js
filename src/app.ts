@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import { createStore, compose } from 'redux';
 import {
   inputCoin,
